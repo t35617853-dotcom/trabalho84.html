@@ -353,7 +353,7 @@
     <div id="bottom">
       <div id="dots"></div>
       <div id="info-bar">
-        <span id="counter">01 / 11</span>
+        <span id="counter">01 / 10</span>
         <div class="sep"></div>
         <button id="btn-auto">
           <svg id="icon-auto" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg>
@@ -376,15 +376,14 @@
   <script>
     const SLIDES = [
       "https://i.imgur.com/ZscbHXs.jpeg",
-      "https://i.imgur.com/gR31O0w.jpeg",
-      "https://i.imgur.com/zBctePz.jpeg",
-      "https://i.imgur.com/PzUvcBj.jpeg",
-      "https://i.imgur.com/Ck5gDrA.jpeg",
-      "https://i.imgur.com/IZV1QFF.jpeg",
-      "https://i.imgur.com/sRfPRUd.jpeg",
-      "https://i.imgur.com/DDR58eH.jpeg",
-      "https://i.imgur.com/cGLSle7.jpeg",
-      "https://i.imgur.com/FYahiJO.jpeg",
+      "https://i.imgur.com/enMulxB.jpeg",
+      "https://i.imgur.com/8Tp8n6n.jpeg",
+      "https://i.imgur.com/RkPg44N.jpeg",
+      "https://i.imgur.com/t8PSurh.jpeg",
+      "https://i.imgur.com/ihFdMVh.jpeg",
+      "https://i.imgur.com/ihFdMVh.jpeg",
+      "https://i.imgur.com/Dnxwj1m.jpeg",
+      "https://i.imgur.com/jyHSUjG.jpeg",
       "https://i.imgur.com/M0szQ5P.jpeg",
     ];
 
@@ -404,14 +403,13 @@
       { name: "Dissolve",  enter: "enter-dissolve",  exit: "exit-dissolve"  },
       { name: "Morph",     enter: "enter-morph",     exit: "exit-morph"     },
       { name: "Glitch",    enter: "enter-glitch",    exit: "exit-glitch"    },
-      { name: "Fade Zoom", enter: "enter-fade-zoom", exit: "exit-fade-zoom" },
     ];
 
     const GLOWS = [
       "hsla(220,70%,55%,0.12)","hsla(260,70%,55%,0.12)","hsla(300,60%,50%,0.12)",
       "hsla(340,70%,55%,0.12)","hsla(40,80%,55%,0.10)","hsla(180,60%,45%,0.10)",
       "hsla(100,60%,45%,0.10)","hsla(200,70%,50%,0.12)","hsla(20,80%,55%,0.10)",
-      "hsla(280,70%,55%,0.12)","hsla(320,60%,50%,0.12)",
+      "hsla(280,70%,55%,0.12)",
     ];
 
     let current = 0, busy = false, autoPlay = false, autoTimer = null, hideTimer = null;
@@ -433,14 +431,12 @@
     const labelAuto    = document.getElementById("label-auto");
     const fsExpand     = document.getElementById("icon-fs-expand");
     const fsCompress   = document.getElementById("icon-fs-compress");
-
     SLIDES.forEach((_, i) => {
       const b = document.createElement("button");
       b.className = "dot-btn" + (i === 0 ? " active" : "");
       b.addEventListener("click", () => goTo(i));
       dotsEl.appendChild(b);
     });
-
     for (let i = 0; i < 20; i++) {
       const d = document.createElement("div");
       d.className = "dot";
@@ -448,12 +444,10 @@
       d.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;background:hsla(${(i*60)%360},70%,70%,0.4);animation-duration:${3+Math.random()*4}s;animation-delay:${Math.random()*5}s;`;
       document.body.appendChild(d);
     }
-
     createSlide(0, null);
     updateUI();
     hintEl.classList.add("show");
     setTimeout(() => hintEl.classList.remove("show"), 3000);
-
     function createSlide(index, enterClass) {
       const el = document.createElement("div");
       el.className = "slide";
@@ -466,13 +460,11 @@
       stage.appendChild(el);
       return el;
     }
-
     function triggerShimmer() {
       shimmer.classList.remove("sweep");
       void shimmer.offsetWidth;
       shimmer.classList.add("sweep");
     }
-
     function updateUI() {
       counter.textContent = String(current+1).padStart(2,"0") + " / " + String(SLIDES.length).padStart(2,"0");
       progressFill.style.width = ((current+1)/SLIDES.length*100) + "%";
@@ -483,7 +475,6 @@
       bgLayer.style.backgroundImage = `url(${BG_IMAGES[current%2]})`;
       tlabel.textContent = TRANSITIONS[current].name;
     }
-
     function goTo(index) {
       if (busy || index === current) return;
       busy = true;
@@ -500,16 +491,13 @@
       setTimeout(() => { busy = false; }, 900);
       if (autoPlay) resetTimerBar();
     }
-
     function next() { goTo((current+1) % SLIDES.length); }
     function prev() { goTo((current-1+SLIDES.length) % SLIDES.length); }
-
     function resetTimerBar() {
       timerBar.classList.remove("running");
       void timerBar.offsetWidth;
       timerBar.classList.add("running");
     }
-
     function startAuto() {
       autoPlay = true;
       btnAuto.classList.add("playing");
@@ -518,7 +506,6 @@
       timerBar.classList.add("running");
       autoTimer = setInterval(next, 4500);
     }
-
     function stopAuto() {
       autoPlay = false;
       btnAuto.classList.remove("playing");
@@ -528,9 +515,7 @@
       timerBar.style.display="none"; void timerBar.offsetWidth; timerBar.style.display="";
       clearInterval(autoTimer);
     }
-
     btnAuto.addEventListener("click", () => autoPlay ? stopAuto() : startAuto());
-
     function toggleFS() {
       if (!document.fullscreenElement) document.documentElement.requestFullscreen();
       else document.exitFullscreen();
@@ -542,16 +527,13 @@
       fsCompress.style.display = fs ? "" : "none";
       btnFS.classList.toggle("active", fs);
     });
-
     document.getElementById("btn-prev").addEventListener("click", prev);
     document.getElementById("btn-next").addEventListener("click", next);
-
     document.addEventListener("keydown", e => {
       if (e.key==="ArrowRight"||e.key===" ") { e.preventDefault(); next(); }
       else if (e.key==="ArrowLeft") { e.preventDefault(); prev(); }
       else if (e.key==="f"||e.key==="F") toggleFS();
     });
-
     function resetHide() {
       controls.classList.remove("hidden"); controls.classList.add("visible");
       clearTimeout(hideTimer);
@@ -560,7 +542,6 @@
     document.addEventListener("mousemove", resetHide);
     document.addEventListener("touchstart", resetHide);
     resetHide();
-
     let touchX = 0;
     document.addEventListener("touchstart", e => { touchX = e.touches[0].clientX; }, { passive: true });
     document.addEventListener("touchend", e => {
